@@ -27,3 +27,7 @@
 
 - npm i bcryptjs
 - npm i -D @types/bcryptjs
+
+## Configurando os tests
+
+- npm i vitest vite-tsconfig-paths -D
