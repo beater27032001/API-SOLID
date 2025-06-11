@@ -22,3 +22,8 @@
 ## Integração com o docker
 
 - docker compose up -d
+
+## Integração com o bcrypt
+
+- npm i bcryptjs
+- npm i -D @types/bcryptjs
