@@ -31,3 +31,4 @@
 ## Configurando os tests
 
 - npm i vitest vite-tsconfig-paths -D
+- npm i -D @vitest/ui
