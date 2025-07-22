@@ -44,7 +44,7 @@ describe('Register Service', () => {
       password: '123456',
     })
 
-    await expect(() =>
+    await await expect(() =>
       sut.execute({
         name: 'John Doe',
         email,
