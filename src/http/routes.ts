@@ -4,6 +4,8 @@ import { FastifyInstance } from 'fastify'
 import { register } from './controllers/register'
 // Importa o controller de autenticação
 import { authenticate } from './controllers/authenticate'
+// Importa o controller de perfil de usuário
+import { profile } from './controllers/profile'
 
 // Função que registra todas as rotas da aplicação
 export async function appRoutes(app: FastifyInstance) {
@@ -12,4 +14,8 @@ export async function appRoutes(app: FastifyInstance) {
 
   // Rota para autenticar usuários (POST /sessions)
   app.post('/sessions', authenticate)
+
+  // Autenticação
+  // Rota para obter informações do usuário logado (GET /me)
+  app.get('/me', profile)
 }
