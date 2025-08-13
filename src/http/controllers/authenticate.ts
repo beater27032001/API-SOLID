@@ -26,9 +26,24 @@ export async function authenticate(
     const authenticateUseCase = makeAuthenticateUseCase()
 
     // Executa a lógica de negócio para autenticar o usuário
-    await authenticateUseCase.execute({
+    const { user } = await authenticateUseCase.execute({
       email,
       password,
+    })
+
+    // Gera o token JWT para o usuário autenticado
+    const token = await reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+        },
+      },
+    )
+
+    // Retorna o token JWT no corpo da resposta
+    return reply.status(200).send({
+      token,
     })
   } catch (error) {
     // Se o erro for de credenciais inválidas, retorna 400 (Bad Request)
@@ -39,7 +54,4 @@ export async function authenticate(
     // Para outros erros, repassa para o handler global de erros
     throw error
   }
-
-  // Retorna 200 (OK) em caso de sucesso
-  return reply.status(200).send()
 }

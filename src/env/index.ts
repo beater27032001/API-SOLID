@@ -6,6 +6,7 @@ import { z } from 'zod'
 // Define o schema de validação para as variáveis de ambiente
 const envSchema = z.object({
   NODE_ENV: z.enum(['dev', 'production', 'test']).default('dev'), // Ambiente da aplicação
+  JWT_SECRET: z.string(), // Chave secreta para o JWT
   PORT: z.coerce.number().default(3333), // Porta do servidor
 })
 

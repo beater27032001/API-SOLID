@@ -6,9 +6,15 @@ import { appRoutes } from './http/routes'
 import { ZodError } from 'zod'
 // Importa as configurações de ambiente
 import { env } from './env'
+import fastifyJwt from '@fastify/jwt'
 
 // Cria uma nova instância do Fastify
 export const app = fastify()
+
+// Registra o plugin do JWT para autenticação
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+})
 
 // Registra todas as rotas da aplicação
 app.register(appRoutes)
