@@ -6,6 +6,7 @@ import { register } from './controllers/register'
 import { authenticate } from './controllers/authenticate'
 // Importa o controller de perfil de usuário
 import { profile } from './controllers/profile'
+import { verifyJwt } from './middlewares/verify-jwt'
 
 // Função que registra todas as rotas da aplicação
 export async function appRoutes(app: FastifyInstance) {
@@ -17,5 +18,5 @@ export async function appRoutes(app: FastifyInstance) {
 
   // Autenticação
   // Rota para obter informações do usuário logado (GET /me)
-  app.get('/me', profile)
+  app.get('/me', { onRequest: [verifyJwt] }, profile)
 }
