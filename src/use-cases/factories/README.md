@@ -25,6 +25,12 @@ Esta pasta implementa o padrão **Factory** para criar instâncias dos use cases
 - **Dependências**: `UsersRepository` (implementação Prisma)
 - **Retorno**: Instância configurada do use case
 
+### `make-get-user-profile-use-case.ts`
+
+- **Objetivo**: Criar instância do `GetUserProfileUseCase` com dependências injetadas
+- **Dependências**: `UsersRepository` (implementação Prisma)
+- **Retorno**: Instância configurada do use case
+
 ## 🏗️ Padrão Factory
 
 ### Conceito

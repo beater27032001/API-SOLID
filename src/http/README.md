@@ -7,6 +7,7 @@ Esta pasta contém toda a camada de apresentação HTTP da aplicação, seguindo
 ## Estrutura
 
 - `controllers/` - Controladores que recebem requisições HTTP e delegam para os use cases
+- `middlewares/` - Middlewares para autenticação e validação
 - `routes.ts` - Definição das rotas da API
 
 ## Responsabilidade

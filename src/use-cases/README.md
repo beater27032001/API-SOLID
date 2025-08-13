@@ -28,6 +28,7 @@ Esta pasta contém a lógica de negócio da aplicação, implementando os casos 
 
 - Registro de usuário
 - Autenticação
+- Obtenção de perfil do usuário
 - Check-in em academias
 - Validação de check-ins
 - Busca de academias próximas

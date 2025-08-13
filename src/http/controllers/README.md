@@ -30,6 +30,14 @@ Esta pasta contém os controllers responsáveis por receber requisições HTTP, 
 - **Use Case**: `AuthenticateUseCase`
 - **Resposta**: 200 (OK) ou 400 (Bad Request)
 
+### `profile.ts`
+
+- **Endpoint**: `GET /me`
+- **Responsabilidade**: Obter informações do perfil do usuário logado
+- **Autenticação**: Requer JWT válido
+- **Use Case**: `GetUserProfileUseCase`
+- **Resposta**: 200 (OK) com dados do usuário ou 401 (Unauthorized)
+
 ## 🏗️ Arquitetura
 
 ### Princípio do Controller Magro

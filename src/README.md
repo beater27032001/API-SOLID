@@ -16,7 +16,7 @@ Esta pasta contém todo o código fonte da aplicação, organizado seguindo os p
 
 - **Objetivo**: Camada de apresentação HTTP da aplicação
 - **Responsabilidade**: Receber requisições HTTP, validar dados de entrada e delegar para os use cases
-- **Estrutura**: Controllers e rotas organizados por funcionalidade
+- **Estrutura**: Controllers, middlewares e rotas organizados por funcionalidade
 
 ### `lib/`
 

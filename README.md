@@ -56,6 +56,7 @@ src/
 - **Database**: PostgreSQL
 - **ORM**: Prisma
 - **Validation**: Zod
+- **Authentication**: JWT
 - **Testing**: Vitest
 - **Architecture**: Clean Architecture + SOLID
 
@@ -119,6 +120,7 @@ npm run test:coverage
 
 - `POST /users` - Registrar novo usuário
 - `POST /sessions` - Autenticar usuário
+- `GET /me` - Obter perfil do usuário logado
 
 ### Academias
 
@@ -143,6 +145,7 @@ Crie um arquivo `.env` na raiz do projeto:
 NODE_ENV=dev
 PORT=3333
 DATABASE_URL="postgresql://docker:docker@localhost:5432/apisolid"
+JWT_SECRET="sua-chave-secreta-jwt-aqui"
 ```
 
 ### Docker
@@ -168,6 +171,16 @@ POST /users
 }
 ```
 
+### Exemplo de Autenticação
+
+```json
+POST /sessions
+{
+  "email": "joao@email.com",
+  "password": "123456"
+}
+```
+
 ### Exemplo de Check-in
 
 ```json
@@ -177,6 +190,14 @@ POST /check-ins
   "userLatitude": -23.5505,
   "userLongitude": -46.6333
 }
+```
+
+### Autenticação
+
+Para rotas protegidas, inclua o token JWT no header:
+
+```http
+Authorization: Bearer seu-token-jwt-aqui
 ```
 
 ## 🤝 Contribuição
