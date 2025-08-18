@@ -41,10 +41,26 @@ export async function authenticate(
       },
     )
 
+    const refreshToken = await reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+          expiresIn: '7d',
+        },
+      },
+    )
+
     // Retorna o token JWT no corpo da resposta
-    return reply.status(200).send({
-      token,
-    })
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: true,
+      })
+      .status(200)
+      .send({ token })
   } catch (error) {
     // Se o erro for de credenciais inválidas, retorna 400 (Bad Request)
     if (error instanceof InvalidCredentialsError) {
