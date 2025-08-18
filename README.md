@@ -35,12 +35,21 @@ A API utiliza JWT para autenticação de usuários. O sistema implementa dois ti
 - **Access Token**: Token de acesso com duração de 10 minutos
 - **Refresh Token**: Token de renovação com duração de 7 dias
 
+### Sistema de Roles
+
+O sistema implementa controle de acesso baseado em roles:
+
+- **User**: Usuário comum com acesso às funcionalidades básicas
+- **Admin**: Administrador com acesso total ao sistema
+- **Manager**: Gerente com acesso limitado a certas funcionalidades
+
 ### Como Funciona
 
 1. **Login**: Usuário faz login com email e senha
-2. **Autenticação**: Sistema valida credenciais e retorna access token + refresh token
+2. **Autenticação**: Sistema valida credenciais e retorna access token + refresh token (incluindo role)
 3. **Acesso**: Usuário usa access token para acessar rotas protegidas
 4. **Renovação**: Quando o access token expira, usa refresh token para obter novo access token
+5. **Autorização**: Sistema verifica role do usuário para controle de acesso
 
 ### Refresh Token
 
@@ -49,6 +58,7 @@ O refresh token serve para:
 - **Segurança**: Evita que o usuário precise fazer login toda vez que o access token expira
 - **Experiência**: Mantém o usuário logado por mais tempo sem comprometer a segurança
 - **Performance**: Reduz a necessidade de consultas ao banco para validação de credenciais
+- **Persistência**: Mantém o role do usuário entre renovações de token
 
 ### Configuração de Cookies
 
@@ -65,6 +75,7 @@ O refresh token serve para:
 - ✅ Refresh de tokens de acesso
 - ✅ Busca de perfil do usuário
 - ✅ Métricas do usuário (total de check-ins)
+- ✅ Sistema de roles (User, Admin, Manager)
 
 ### Academias
 
@@ -87,7 +98,7 @@ O refresh token serve para:
 - **Database**: PostgreSQL
 - **ORM**: Prisma
 - **Validation**: Zod
-- **Authentication**: JWT + Cookies
+- **Authentication**: JWT + Cookies + Roles
 - **Testing**: Vitest
 - **Architecture**: Clean Architecture + SOLID
 
@@ -228,6 +239,8 @@ POST /sessions
 
 - `refreshToken`: Token de renovação (httpOnly, secure, sameSite)
 
+**Nota:** O token JWT inclui o role do usuário para controle de acesso.
+
 ### Exemplo de Renovação de Token
 
 ```http
@@ -242,6 +255,8 @@ Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
+
+**Nota:** O novo token mantém o role do usuário do refresh token.
 
 ### Exemplo de Check-in
 
@@ -281,6 +296,61 @@ Authorization: Bearer seu-token-jwt-aqui
 - **Criação de Instâncias**: Factories criam instâncias dos use cases
 - **Configuração**: Centraliza a configuração de dependências
 - **Flexibilidade**: Permite trocar implementações facilmente
+
+## 🔒 Controle de Acesso
+
+### Sistema de Roles
+
+- **User**: Acesso às funcionalidades básicas (check-ins, perfil, métricas)
+- **Admin**: Acesso total ao sistema (criar academias, validar check-ins)
+- **Manager**: Acesso limitado (visualizar dados, algumas operações)
+
+### Middleware de Autorização
+
+- **verifyJwt**: Verifica se o token JWT é válido
+- **Role-based Access**: Controle de acesso baseado no role do usuário
+- **Proteção de Rotas**: Rotas sensíveis requerem roles específicos
+
+## 🧪 Estratégia de Testes
+
+### Testes Unitários
+
+- **Use Cases**: Testados isoladamente com repositórios mock
+- **Repositórios**: Testados com dados em memória
+- **Validações**: Schemas Zod testados com dados válidos e inválidos
+
+### Testes E2E
+
+- **HTTP Controllers**: Testados com banco de dados real
+- **Autenticação**: JWT tokens e cookies testados end-to-end
+- **Schemas Isolados**: Cada teste roda em schema separado do PostgreSQL
+
+## 🚀 Como Usar
+
+### Desenvolvimento
+
+```bash
+npm run dev          # Inicia servidor em modo desenvolvimento
+npm run build        # Compila TypeScript para JavaScript
+npm run start        # Inicia servidor em modo produção
+```
+
+### Testes
+
+```bash
+npm test             # Executa todos os testes
+npm run test:watch   # Executa testes em modo watch
+npm run test:e2e     # Executa testes end-to-end
+npm run test:coverage # Executa testes com relatório de cobertura
+```
+
+### Banco de Dados
+
+```bash
+npx prisma studio    # Abre interface visual do Prisma
+npx prisma migrate dev # Executa migrações em desenvolvimento
+npx prisma generate  # Gera cliente Prisma atualizado
+```
 
 ## 🤝 Contribuição
 
