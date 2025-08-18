@@ -7,6 +7,7 @@ import { env } from './env'
 import fastifyJwt from '@fastify/jwt'
 import { usersRoutes } from './http/controllers/users/routes'
 import { gymsRoutes } from './http/controllers/gyms/routes'
+import { checkInsRoutes } from './http/controllers/check-ins/routes'
 
 // Cria uma nova instância do Fastify
 export const app = fastify()
@@ -19,6 +20,7 @@ app.register(fastifyJwt, {
 // Registra todas as rotas da aplicação
 app.register(usersRoutes)
 app.register(gymsRoutes)
+app.register(checkInsRoutes)
 
 // Configura o tratamento global de erros
 app.setErrorHandler((error, _, reply) => {
