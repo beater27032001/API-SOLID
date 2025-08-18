@@ -1,12 +1,12 @@
 // Importa o framework Fastify para criar a aplicação web
 import fastify from 'fastify'
-// Importa as rotas da aplicação
-import { appRoutes } from './http/routes'
 // Importa o tipo de erro do Zod para validação
 import { ZodError } from 'zod'
 // Importa as configurações de ambiente
 import { env } from './env'
 import fastifyJwt from '@fastify/jwt'
+import { usersRoutes } from './http/controllers/users/routes'
+import { gymsRoutes } from './http/controllers/gyms/routes'
 
 // Cria uma nova instância do Fastify
 export const app = fastify()
@@ -17,7 +17,8 @@ app.register(fastifyJwt, {
 })
 
 // Registra todas as rotas da aplicação
-app.register(appRoutes)
+app.register(usersRoutes)
+app.register(gymsRoutes)
 
 // Configura o tratamento global de erros
 app.setErrorHandler((error, _, reply) => {

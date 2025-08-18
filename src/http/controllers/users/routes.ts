@@ -1,15 +1,15 @@
 // Importa o tipo FastifyInstance para tipagem
 import { FastifyInstance } from 'fastify'
 // Importa o controller de registro de usuários
-import { register } from './controllers/register'
+import { register } from './register'
 // Importa o controller de autenticação
-import { authenticate } from './controllers/authenticate'
+import { authenticate } from './authenticate'
 // Importa o controller de perfil de usuário
-import { profile } from './controllers/profile'
-import { verifyJwt } from './middlewares/verify-jwt'
+import { profile } from './profile'
+import { verifyJwt } from '../../middlewares/verify-jwt'
 
 // Função que registra todas as rotas da aplicação
-export async function appRoutes(app: FastifyInstance) {
+export async function usersRoutes(app: FastifyInstance) {
   // Rota para criar novos usuários (POST /users)
   app.post('/users', register)
 
