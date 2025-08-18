@@ -26,12 +26,43 @@ src/
 └── utils/         # Funções utilitárias
 ```
 
+## 🔐 Sistema de Autenticação
+
+### JWT (JSON Web Token)
+
+A API utiliza JWT para autenticação de usuários. O sistema implementa dois tipos de tokens:
+
+- **Access Token**: Token de acesso com duração de 10 minutos
+- **Refresh Token**: Token de renovação com duração de 7 dias
+
+### Como Funciona
+
+1. **Login**: Usuário faz login com email e senha
+2. **Autenticação**: Sistema valida credenciais e retorna access token + refresh token
+3. **Acesso**: Usuário usa access token para acessar rotas protegidas
+4. **Renovação**: Quando o access token expira, usa refresh token para obter novo access token
+
+### Refresh Token
+
+O refresh token serve para:
+
+- **Segurança**: Evita que o usuário precise fazer login toda vez que o access token expira
+- **Experiência**: Mantém o usuário logado por mais tempo sem comprometer a segurança
+- **Performance**: Reduz a necessidade de consultas ao banco para validação de credenciais
+
+### Configuração de Cookies
+
+- **httpOnly**: Previne acesso via JavaScript (proteção contra XSS)
+- **secure**: Só é enviado em conexões HTTPS
+- **sameSite**: Protege contra ataques CSRF
+
 ## 🚀 Funcionalidades
 
 ### Usuários
 
 - ✅ Registro de novos usuários
-- ✅ Autenticação de usuários
+- ✅ Autenticação de usuários com JWT
+- ✅ Refresh de tokens de acesso
 - ✅ Busca de perfil do usuário
 - ✅ Métricas do usuário (total de check-ins)
 
@@ -56,7 +87,7 @@ src/
 - **Database**: PostgreSQL
 - **ORM**: Prisma
 - **Validation**: Zod
-- **Authentication**: JWT
+- **Authentication**: JWT + Cookies
 - **Testing**: Vitest
 - **Architecture**: Clean Architecture + SOLID
 
@@ -112,6 +143,9 @@ npm run test:watch
 
 # Executar testes com coverage
 npm run test:coverage
+
+# Executar testes end-to-end
+npm run test:e2e
 ```
 
 ## 🌐 Endpoints
@@ -120,6 +154,7 @@ npm run test:coverage
 
 - `POST /users` - Registrar novo usuário
 - `POST /sessions` - Autenticar usuário
+- `PATCH /token/refresh` - Renovar token de acesso
 - `GET /me` - Obter perfil do usuário logado
 
 ### Academias
@@ -130,7 +165,7 @@ npm run test:coverage
 
 ### Check-ins
 
-- `POST /check-ins` - Realizar check-in
+- `POST /gyms/:gymId/check-ins` - Realizar check-in
 - `PATCH /check-ins/:id/validate` - Validar check-in
 - `GET /check-ins/history` - Histórico de check-ins
 - `GET /check-ins/metrics` - Métricas do usuário
@@ -181,12 +216,39 @@ POST /sessions
 }
 ```
 
+**Resposta:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Cookies:**
+
+- `refreshToken`: Token de renovação (httpOnly, secure, sameSite)
+
+### Exemplo de Renovação de Token
+
+```http
+PATCH /token/refresh
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Resposta:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
 ### Exemplo de Check-in
 
 ```json
-POST /check-ins
+POST /gyms/:gymId/check-ins
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 {
-  "gymId": "uuid-da-academia",
   "userLatitude": -23.5505,
   "userLongitude": -46.6333
 }
@@ -199,6 +261,26 @@ Para rotas protegidas, inclua o token JWT no header:
 ```http
 Authorization: Bearer seu-token-jwt-aqui
 ```
+
+## 🏗️ Padrões de Projeto
+
+### Repository Pattern
+
+- **Interface**: Define contratos para acesso a dados
+- **Implementação**: Classes concretas que implementam as interfaces
+- **Testes**: Repositórios em memória para testes unitários
+
+### Use Case Pattern
+
+- **Lógica de Negócio**: Cada funcionalidade é um caso de uso isolado
+- **Injeção de Dependência**: Dependências são injetadas via construtor
+- **Testabilidade**: Fácil de testar isoladamente
+
+### Factory Pattern
+
+- **Criação de Instâncias**: Factories criam instâncias dos use cases
+- **Configuração**: Centraliza a configuração de dependências
+- **Flexibilidade**: Permite trocar implementações facilmente
 
 ## 🤝 Contribuição
 

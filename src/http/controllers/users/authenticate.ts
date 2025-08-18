@@ -33,7 +33,9 @@ export async function authenticate(
 
     // Gera o token JWT para o usuário autenticado
     const token = await reply.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sign: {
           sub: user.id,
@@ -42,7 +44,9 @@ export async function authenticate(
     )
 
     const refreshToken = await reply.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sign: {
           sub: user.id,
