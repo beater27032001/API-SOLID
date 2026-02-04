@@ -366,4 +366,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👨‍💻 Autor
 
+José Carlos Paiva
+
+
 Desenvolvido seguindo os princípios da arquitetura limpa e SOLID para criar um código limpo, testável e manutenível.
